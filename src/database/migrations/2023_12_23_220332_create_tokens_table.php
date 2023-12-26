@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tokens', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->uuid('access_token');
-            $table->uuid('refresh_token');
+            $table->uuid('access_token')->unique();
+            $table->uuid('refresh_token')->unique();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 
