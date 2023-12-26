@@ -19,11 +19,16 @@ class ValidateRefreshToken
     {
         $bearerToken = $request->bearerToken();
         if (is_null($bearerToken) or empty($bearerToken)) {
-            return response()->json(ResponseTemplate::errUnauthorized(), 401);
+            return response()->json(ResponseTemplate::errInvalidRefreshToken(), 401);
         }
 
         $token = Token::where('refresh_token',$bearerToken)->get()->first();
         if (is_null($token)) {
+            return response()->json(ResponseTemplate::errInvalidRefreshToken(),401);
+        }
+
+        $ttl = config('token.ttl.refresh',60);
+        if ($token->created_at->diffInSeconds(now()) > $ttl) {
             return response()->json(ResponseTemplate::errInvalidRefreshToken(),401);
         }
 
