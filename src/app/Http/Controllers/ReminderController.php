@@ -57,4 +57,12 @@ class ReminderController extends Controller
             ]
         ]);
     }
+
+    public function detail(Request $request, $id)
+    {
+        return response()->json([
+            'ok' => true,
+            'data' => Reminder::findById($id)
+        ]);
+    }
 }
