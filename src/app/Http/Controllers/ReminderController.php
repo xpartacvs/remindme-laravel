@@ -65,4 +65,19 @@ class ReminderController extends Controller
             'data' => Reminder::findById($id)
         ]);
     }
+
+    public function delete(Request $request, $id)
+    {
+        $reminder = Reminder::find($id);
+
+        if (is_null($reminder)) {
+            return response()->json([
+                'ok' => false,
+            ]);
+        }
+
+        return response()->json([
+            'ok' => $reminder->delete(),
+        ]);
+    }
 }
