@@ -25,6 +25,16 @@ class Reminder extends Model
             'description',
             'remind_at',
             'event_at'
-        ]);
+        ])->toArray();
+    }
+
+    public static function findById($id) {
+        return DB::table('reminders')->where('id',$id)->get([
+            'id',
+            'title',
+            'description',
+            'remind_at',
+            'event_at'
+        ])->first();
     }
 }
