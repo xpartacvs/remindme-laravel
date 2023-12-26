@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\ResponseTemplate;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\ResponseTemplate;
+use App\Models\Token;
 
-class BearerTokenMustExists
+class ValidateRefreshToken
 {
     /**
      * Handle an incoming request.
@@ -17,15 +18,13 @@ class BearerTokenMustExists
     public function handle(Request $request, Closure $next): Response
     {
         $bearerToken = $request->bearerToken();
-
         if (is_null($bearerToken) or empty($bearerToken)) {
-            if ($request->method() == 'POST') {
-                return response()->json(ResponseTemplate::errUnauthorized(), 401);
-            } else if ($request->method() == 'PUT') {
-                return response()->json(ResponseTemplate::errInvalidRefreshToken(), 401);
-            } else {
-                return response()->json(ResponseTemplate::err405(), 405);
-            }
+            return response()->json(ResponseTemplate::errUnauthorized(), 401);
+        }
+
+        $token = Token::where('refresh_token',$bearerToken)->get()->first();
+        if (is_null($token)) {
+            return response()->json(ResponseTemplate::errInvalidRefreshToken(),401);
         }
 
         return $next($request);
