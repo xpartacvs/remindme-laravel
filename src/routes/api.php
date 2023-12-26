@@ -28,4 +28,5 @@ Route::middleware([ValidateAccessToken::class])->group(function () {
     Route::get('/reminders',[ReminderController::class, 'list']);
     Route::get('/reminders/{id}',[ReminderController::class, 'detail']);
     Route::delete('/reminders/{id}',[ReminderController::class, 'delete']);
+    Route::put('/reminders/{id}',[ReminderController::class, 'edit']);
 });
