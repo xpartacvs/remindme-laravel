@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SessionController;
-use App\Http\Middleware\BearerTokenMustExists;
 use App\Http\Middleware\ValidateAccessToken;
 use App\Http\Middleware\ValidateRefreshToken;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +21,8 @@ Route::post('/session',[SessionController::class, 'login']);
 
 Route::middleware([ValidateRefreshToken::class])->group(function () {
     Route::put('/session',[SessionController::class, 'refresh']);
+});
+
+Route::middleware([ValidateAccessToken::class])->group(function () {
+    Route::post('/reminders',[ReminderController::class, 'create']);
 });
