@@ -25,4 +25,5 @@ Route::middleware([ValidateRefreshToken::class])->group(function () {
 
 Route::middleware([ValidateAccessToken::class])->group(function () {
     Route::post('/reminders',[ReminderController::class, 'create']);
+    Route::get('/reminders',[ReminderController::class, 'list']);
 });

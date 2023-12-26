@@ -39,4 +39,22 @@ class ReminderController extends Controller
             ]
         ]);
     }
+
+    public function list(Request $request)
+    {
+        $request->validate([
+            'limit' => 'integer|gte:1|lte:10'
+        ]);
+
+        $limit = $request->input('limit',10);
+        $reminders = Reminder::listByRemindAt($limit);
+
+        return response()->json([
+            'ok' => true,
+            'data' => [
+                'reminders' => $reminders,
+                'limit' => $limit
+            ]
+        ]);
+    }
 }
