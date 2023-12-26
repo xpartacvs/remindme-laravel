@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SessionController;
 use App\Http\Middleware\BearerTokenMustExists;
-use App\Http\Middleware\EnsureRefeshTokenIsExists;
-use App\Http\Middleware\EnsureTokenIsExists;
-use Illuminate\Http\Request;
+use App\Http\Middleware\ValidateAccessToken;
+use App\Http\Middleware\ValidateRefreshToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-    
-Route::middleware([BearerTokenMustExists::class])->group(function () {
-    Route::post('/session',[SessionController::class, 'login'])->withoutMiddleware([BearerTokenMustExists::class]);
+
+Route::post('/session',[SessionController::class, 'login']);
+
+Route::middleware([ValidateRefreshToken::class])->group(function () {
     Route::put('/session',[SessionController::class, 'refresh']);
 });
