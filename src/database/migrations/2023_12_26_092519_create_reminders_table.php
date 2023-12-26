@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tokens', function (Blueprint $table) {
+        Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->uuid('access_token')->unique();
-            $table->uuid('refresh_token')->unique();
+            $table->string('title');
+            $table->text('description');
+            $table->unsignedInteger('remind_at');
+            $table->unsignedInteger('event_at');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tokens');
+        Schema::dropIfExists('reminders');
     }
 };

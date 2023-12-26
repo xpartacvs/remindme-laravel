@@ -50,14 +50,9 @@ class SessionController extends Controller
         ]);
     }
 
-    public function refresh(Request $request) {
-        $bearerToken = $request->bearerToken();
-
-        $token = Token::where('refresh_token',$bearerToken)->get()->first();
-        if (is_null($token)) {
-            return response()->json(ResponseTemplate::errInvalidRefreshToken(),401);
-        }
-
+    public function refresh(Request $request) 
+    {
+        $token = Token::where('refresh_token',$request->bearerToken())->get()->first();
         $token->access_token = (string) Str::uuid();
         if (! $token->save()) {
             return response()->json(ResponseTemplate::err500(), 500);
