@@ -69,15 +69,37 @@ class ReminderController extends Controller
     public function delete(Request $request, $id)
     {
         $reminder = Reminder::find($id);
-
         if (is_null($reminder)) {
-            return response()->json([
-                'ok' => false,
-            ]);
+            return response()->json(ResponseTemplate::err404(), 404);
         }
 
         return response()->json([
             'ok' => $reminder->delete(),
         ]);
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'title' => 'string',
+            'description' => 'string',
+            'remind_at' => 'integer',
+            'event_at' => 'integer'
+        ]);
+
+        $reminder = Reminder::find($id);
+        if (is_null($reminder)) {
+            return response()->json(ResponseTemplate::err404(), 404);
+        }
+
+        foreach ($validated as $key => $value) {
+            $reminder->{$key} = $value;
+        }
+
+        if (! $reminder->save()) {
+            return response()->json(ResponseTemplate::err500(), 500);
+        }
+
+        return $this->detail($request, $id);
     }
 }

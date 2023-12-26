@@ -41,11 +41,11 @@ class ResponseTemplate extends Model
         ];
     }
 
-    public static function err405() {
+    public static function err404() {
         return [
             'ok' => false,
-            'err' => 'ERR_METHOD_NOT_ALLOWED',
-            'msg' => 'method not allowed'
+            'err' => 'ERR_RESOURCE_NOT_FOUND',
+            'msg' => 'resource not found'
         ];
     }
 }
