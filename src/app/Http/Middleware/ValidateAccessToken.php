@@ -27,7 +27,7 @@ class ValidateAccessToken
             return response()->json(ResponseTemplate::errUnauthorized(),401);
         }
 
-        $ttl = config('token.ttl');
+        $ttl = config('token.ttl.access',20);
         if ($token->updated_at->diffInSeconds(now()) > $ttl) {
             return response()->json(ResponseTemplate::errUnauthorized(),401);
         }
