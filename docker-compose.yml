@@ -1,0 +1,44 @@
+version: "3.8"
+
+networks:
+  remindernet:
+    driver: bridge
+
+services:
+
+  db:
+    image: mariadb:10.4
+    networks:
+      - remindernet
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=db_remindme
+      - MYSQL_ROOT_PASSWORD=root
+
+  backend:
+    image: nabitu/remindme:latest
+    build:
+      context: ./src
+    networks:
+      - remindernet
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=Asia/Jakarta
+      - APP_NAME=Nabitu-Remind-Me
+      - APP_ENV=local
+      - APP_KEY=base64:CCuNatiC93dyWTMdzJWlPVbxIjwL1IGUkntcGmYkNoc=
+      - APP_DEBUG=true
+      - APP_URL=http://localhost
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=db_remindme
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - ACCESS_TOKEN_TTL=20
+      - REFRESH_TOKEN_TTL=300
+    depends_on:
+      - db

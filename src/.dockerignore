@@ -1,0 +1,12 @@
+vendor/
+.git/
+**/.gitignore
+**/.gitattributes
+**/*.md
+.editorconfig
+.env
+.env.example
+.dockerignore
+Dockerfile
+tmp.txt
+
