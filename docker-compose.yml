@@ -11,6 +11,8 @@ services:
     networks:
       - remindernet
     restart: unless-stopped
+    ports:
+      - "36037:3306"
     environment:
       - TZ=Asia/Jakarta
       - MYSQL_DATABASE=db_remindme
